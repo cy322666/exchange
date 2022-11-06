@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        $schedule->command('stocks:cron')->cron("*/15 * * * *");
+//        $schedule->command('stocks:cron')->cron("*/15 * * * *");
 //         $schedule->command('inspire')->hourly();
     }
 
