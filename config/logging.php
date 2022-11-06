@@ -118,10 +118,11 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        'status' => [
-            'driver' => 'single',
-            'path' => storage_path('logs/lead_status.log'),
+        'input' => [
+            'driver' => 'daily',
             'level' => env('LOG_LEVEL', 'debug'),
+            'path' => storage_path('logs/input/input.log'),
+            'days' => 14,
         ],
     ],
 

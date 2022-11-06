@@ -19,7 +19,14 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('exchange', [SiteController::class, 'exchange']);
-Route::post('status', [SiteController::class, 'updateStatus'])->middleware('status.log');
-Route::get('index/{lead:lead_id}', [SiteController::class, 'getStatus']);
-Route::post('lead', [SiteController::class, 'lead']);
+Route::group(['prefix' => 'site', 'middleware' => 'input.log'], function () {
+
+    Route::get('exchange', [SiteController::class, 'exchange']);
+
+    Route::post('status', [SiteController::class, 'updateStatus']);
+
+    Route::get('{exchange:lead_id}', [SiteController::class, 'getStatus']);
+
+    Route::post('lead', [SiteController::class, 'lead']);
+});
+
