@@ -8,12 +8,14 @@ use App\Http\Requests\StatusRequest;
 use App\Http\Resources\Lead\IdResource;
 use App\Http\Resources\Lead\StatusResource;
 use App\Models\Account;
+use App\Models\Course;
 use App\Models\Exchange;
 use App\Services\amoCRM\Client;
 use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -70,9 +72,22 @@ class SiteController extends Controller
     }
 
     // Берем из бд курсы считаем и отдаем
-    public function exchange(ExchangeRequest $request)
+    public function exchange(ExchangeRequest $request): float|JsonResponse
     {
-        $data = $request->validated();
+        try {
+            $course = Course::query()
+                ->where('name', $request->type)
+                ->firstOrFail()
+                ->value;
+
+        } catch (Throwable $exception) {
+
+            Log::error(__METHOD__, [$exception->getMessage()]);
+
+            return response()->json(['status' => 'error'], 500);
+        }
+
+        return response()->json(['course' => floatval($course * Course::$default * $request->need_cost)]);
     }
 
     public function updateStatus(StatusRequest $request)
@@ -83,6 +98,7 @@ class SiteController extends Controller
             $model = Exchange::query()
                 ->where('lead_id', $data['leads']['status'][0]['id'])
                 ->firstOrFail();
+
             $model->lead_status = $data['value'];
             $model->save();
 

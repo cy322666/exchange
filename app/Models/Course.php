@@ -9,6 +9,8 @@ class Course extends Model
 {
     use HasFactory;
 
+    static float $default = 1.0;
+
     protected $fillable = [
         'name',
         'value',
