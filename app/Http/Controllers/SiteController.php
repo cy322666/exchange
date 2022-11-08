@@ -14,6 +14,8 @@ use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
+use Throwable;
 
 class SiteController extends Controller
 {
@@ -30,19 +32,24 @@ class SiteController extends Controller
             if ($amoApi->auth) {
                 $contact = Contacts::search(['Почта' => $data['email']], $amoApi);
 
-                if (!$contact) {
+                if (!$contact)
                     $contact = Contacts::create($amoApi, $data['email']);
-                }
+
                 $lead = Leads::create($contact, $data);
 
             } else {
-                throw new Exception('Auth error');
+                Log::error(__METHOD__, ['Auth error']);
+
+                return response()->json(['status' => 'error'], 500);
             }
+
             return new IdResource($lead);
 
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
 
-            $exception->getMessage();
+            Log::error(__METHOD__, [$exception->getMessage()]);
+
+            return response()->json(['status' => 'error'], 500);
 
         } finally {
 
@@ -83,7 +90,7 @@ class SiteController extends Controller
 
             return $exception->getMessage();
 
-        } catch (\Throwable $exception) {
+        } catch (Throwable $exception) {
 
             return $exception->getMessage();
         }
