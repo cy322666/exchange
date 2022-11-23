@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="SshConfigs">
+    <configs>
+      <sshConfig authType="PASSWORD" host="89.108.78.93" id="7741e96d-0bd5-48f2-8b6a-b919058a21bb" port="22" customName="exchangebot@server" nameFormat="CUSTOM" username="root" useOpenSSHConfig="true">
+        <option name="customName" value="exchangebot@server" />
+      </sshConfig>
+      <sshConfig authType="PASSWORD" host="95.163.237.238" id="6ab0f896-6b51-4c51-943a-9cdda8bfc35b" port="22" nameFormat="DESCRIPTIVE" username="root" useOpenSSHConfig="true" />
+    </configs>
+  </component>
+</project>
