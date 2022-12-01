@@ -69,7 +69,11 @@
     </div>
 
     <div class="mt-30 curs tc-grey text-2 text-center">
-        1 USDT = <span>63</span> RUB
+        1 USDT = <span>{{ \App\Models\Course::query()
+                                ->where('name', 'usdtrub')
+                                ->first()
+                                ?->value
+                        }}</span> RUB
     </div>
 
     <button class="next-step mt-60">Продолжить</button>

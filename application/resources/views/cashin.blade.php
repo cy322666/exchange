@@ -4,7 +4,7 @@
 
 	<div class="container active step-alert" id="first">
 
-		<?php include 'template-parts/cashin/step-alert.php' ?>
+		@include('cashin.step-alert')
 
 	</div>
 

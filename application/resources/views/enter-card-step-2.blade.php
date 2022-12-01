@@ -6,10 +6,10 @@
 		</div>
 
 		<div class="">
-			
-			<div class="text-middle mb-40">Введи номер карты <div class="type-of-recive">Tinkoff<img src="assets/images/tink.png" width="26px" height="26px"></div><br />
+
+			<div class="text-middle mb-40">Введи номер карты <div class="type-of-recive">Tinkoff<img src="{{asset('images/tink.png')}}" width="26px" height="26px"></div><br />
 		для получения средств</div>
-			
+
 
 		</div>
 

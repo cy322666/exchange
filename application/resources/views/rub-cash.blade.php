@@ -1,12 +1,9 @@
-<?php include 'template-parts/main/header.php' ?>
+@include('template-parts.main.header')
 	<div class="glowing"></div>
 <div class="inner">
-
-	
-
-
 	<div class="container active step-2">
-		<?php include 'template-parts/rub-cash/step-2.php' ?>
+        @include('rub-cash.step-2')
 	</div>
 </div>
-<?php include 'template-parts/main/footer.php' ?>
+
+@include('template-parts.main.footer')
