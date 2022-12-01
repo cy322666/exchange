@@ -17,3 +17,18 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('rub', function () {
+    return view('rub');
+});
+
+Route::get('usdt', function () {
+    return view('usdt');
+});
+
+Route::get('cash', function () {
+    return view('cashin');
+});
+
+Route::get('rub-cash', function () {
+    return view('rub-cash');
+});
