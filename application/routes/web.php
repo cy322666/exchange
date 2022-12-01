@@ -25,7 +25,7 @@ Route::get('usdt', function () {
     return view('usdt');
 });
 
-Route::get('cash', function () {
+Route::get('cashin', function () {
     return view('cashin');
 });
 
