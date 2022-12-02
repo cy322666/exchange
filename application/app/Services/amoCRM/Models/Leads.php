@@ -53,21 +53,21 @@ abstract class Leads
         }
     }
 
-    public static function create($contact, array $params)
+    public static function create($contact, $model)
     {
         $lead = $contact->createLead();
 
         $lead->name = $contact->name;
         $lead->contacts_id = $contact->id;
 
-        $lead->cf('Платежные данные')->setValue($params['wallet']);
-        $lead->cf('Тип обмена')->setValue($params['type']);
-        $lead->cf('Метод платежа')->setValue($params['method']);
-        $lead->cf('Отправленная сумма')->setValue($params['send'][0]['cost']);
-        $lead->cf('Отправленная валюта')->setValue($params['send'][0]['currency']);
-        $lead->cf('Нужная сумма')->setValue($params['need'][0]['cost']);
-        $lead->cf('Нужная валюта')->setValue($params['need'][0]['currency']);
-        $lead->cf('Обменный курс')->setValue($params['exchange_rate']);
+//        $lead->cf('Платежные данные')->setValue($params['wallet']);
+//        $lead->cf('Тип обмена')->setValue($params['type']);
+//        $lead->cf('Метод платежа')->setValue($model->);
+        $lead->cf('Отправленная сумма')->setValue($model->send_cost);
+        $lead->cf('Отправленная валюта')->setValue($model->send_currency);
+        $lead->cf('Нужная сумма')->setValue($model->need_cost);
+        $lead->cf('Тип обмена')->setValue($model->need_currency);
+        $lead->cf('Обменный курс')->setValue($model->exchange_rate);
 
         $lead->save();
 

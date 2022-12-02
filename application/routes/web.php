@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\SiteController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -32,3 +33,7 @@ Route::get('cashin', function () {
 Route::get('rub-cash', function () {
     return view('rub-cash');
 });
+
+Route::get('exchange', [SiteController::class, 'exchange'])->name('exchange');
+
+Route::post('form', [SiteController::class, 'form'])->name('form');

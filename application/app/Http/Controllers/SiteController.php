@@ -15,7 +15,9 @@ use App\Services\amoCRM\Models\Contacts;
 use App\Services\amoCRM\Models\Leads;
 use Exception;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Throwable;
 
@@ -24,12 +26,27 @@ class SiteController extends Controller
     /**
      * @throws Exception
      */
-    public function lead(LeadRequest $request)
+    public function form(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->toArray();
 
         try {
-            $amoApi = (new Client(Account::first()))->init();
+
+            $model = Exchange::query()->create([
+                'contact_id' => $contact->id ?? null,
+                'lead_id' => $lead->id ?? null,
+//                'wallet' => $data['wallet'],
+//                'type_exchange' => $data['sender'],
+                'email' => $data['email'],
+//                'method_pay' => $data['method'],
+                'send_cost' => $data['sender_amount'],
+                'send_currency' => $data['sender'],
+                'need_cost' => $data['reciver_amount'],
+                'need_currency' => $data['reciver'],
+                'exchange_rate' => $data['kurs'],
+            ]);
+
+            $amoApi = (new Client(Account::query()->first()))->init();
 
             if ($amoApi->auth) {
                 $contact = Contacts::search(['Почта' => $data['email']], $amoApi);
@@ -37,7 +54,7 @@ class SiteController extends Controller
                 if (!$contact)
                     $contact = Contacts::create($amoApi, $data['email']);
 
-                $lead = Leads::create($contact, $data);
+                $lead = Leads::create($contact, $model);
 
             } else {
                 Log::error(__METHOD__, ['Auth amoCRM error']);
@@ -45,29 +62,21 @@ class SiteController extends Controller
                 return response()->json(['status' => 'error'], 500);
             }
 
-            return new IdResource($lead);
+            $model->lead_id = $lead->id;
+            $model->contact_id = $contact->id;
+            $model->save();
+
+            $viewName = match ($model->need_currency) {
+                'alfa-rub-cash' => 'cashin.step-7',
+            };
+
+            return view($viewName);
 
         } catch (Throwable $exception) {
 
-            Log::error(__METHOD__, [$exception->getMessage()]);
+            Log::error(__METHOD__, [$exception->getMessage().' : '.$exception->getFile().' : '.$exception->getLine()]);
 
             return response()->json(['status' => 'error'], 500);
-
-        } finally {
-
-            Exchange::query()->create([
-                'contact_id' => $contact->id ?? null,
-                'lead_id' => $lead->id ?? null,
-                'wallet' => $data['wallet'],
-                'type_exchange' => $data['type'],
-                'email' => $data['email'],
-                'method_pay' => $data['method'],
-                'send_cost' => $data['send'][0]['cost'],
-                'send_currency' => $data['send'][0]['currency'],
-                'need_cost' => $data['need'][0]['cost'],
-                'need_currency' => $data['need'][0]['currency'],
-                'exchange_rate' => $data['exchange_rate'],
-            ]);
         }
     }
 

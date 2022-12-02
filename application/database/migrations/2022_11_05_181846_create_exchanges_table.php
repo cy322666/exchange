@@ -16,18 +16,18 @@ return new class extends Migration
         Schema::create('exchanges', function (Blueprint $table) {
             $table->id();
 
-            $table->integer('contact_id');
-            $table->integer('lead_id')->unique();
+            $table->integer('contact_id')->nullable();
+            $table->integer('lead_id')->unique()->nullable();
             $table->string('lead_status')->default('Ждем оплату');
-            $table->string('wallet');
-            $table->string('type_exchange');
-            $table->string('email');
-            $table->string('method_pay');
-            $table->float('send_cost');
-            $table->string('send_currency');
-            $table->float('need_cost');
-            $table->string('need_currency');
-            $table->float('exchange_rate');
+            $table->string('wallet')->nullable();
+            $table->string('type_exchange')->nullable();
+            $table->string('email')->nullable();
+            $table->string('method_pay')->nullable();
+            $table->float('send_cost')->nullable();
+            $table->string('send_currency')->nullable();
+            $table->float('need_cost')->nullable();
+            $table->string('need_currency')->nullable();
+            $table->float('exchange_rate')->nullable();
 
             $table->timestamps();
         });

@@ -1,3 +1,15 @@
+@include('template-parts.main.header')
+<div class="glowing"></div>
+<div class="cashin inner">
+
+    <div class="container active step-alert" id="first">
+
+        @include('cashin.step-alert')
+
+    </div>
+
+    <div class="container  step-7 status_page">
+
 <div class="workplace" data-step="4">
 
 
@@ -16,7 +28,13 @@
 
 				<div class="flex-between f-width align-center mb-20">
 					<div class="tc-grey text-1">Заявка</div>
-					<div class="text-1 fw-bold">#10010</div>
+					<div class="text-1 fw-bold">#{{
+                        \App\Models\Exchange::query()
+                            ->where('email', request()->get('email'))
+                            ->where('lead_status', 'Ждем оплату')
+                            ->first()
+                            ?->lead_id
+                    }}</div>
 				</div>
 
 
@@ -35,3 +53,7 @@
 
 
 	</div>
+    </div>
+    @include('cashin.details')
+</div>
+@include('template-parts.main.footer')
